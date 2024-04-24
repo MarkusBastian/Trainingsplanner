@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct TrainingDevice: Codable{
+struct TrainingDevice: Codable {
     var bezeichnung: String
     var nummer: String
     var einstellung: String

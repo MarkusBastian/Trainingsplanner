@@ -1,24 +1,45 @@
 import UIKit
+import AVKit
+
 
 class TrainingDeviceTableViewController: UITableViewController {
     
     struct PropertyKeys {
         static let trainingDeviceCell = "TrainingDeviceCell"
     }
+    
     var inSwipe: Bool = false
     var myEdit: Bool = false
     var trainingDevices: [TrainingDevice] = []
     var checkMarkInRows: [Int: Bool] = [:]
-    
+    var trainingDevicesInCategories: [TrainingDeviceInCategory] = []
+    var deviceCategories: [DeviceCategory] = [DeviceCategory] ()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         navigationItem.leftBarButtonItem = editButtonItem
         navigationItem.leftBarButtonItem?.title = "Bearbeiten"
-
+        deviceCategories = [DeviceCategory.warmup, DeviceCategory.legs, DeviceCategory.back, DeviceCategory.abdominal, DeviceCategory.arms]
+        trainingDevicesInCategories =
+        [TrainingDeviceInCategory(category: 0, trainingDevices: []),
+         TrainingDeviceInCategory(category: 1, trainingDevices: []),
+         TrainingDeviceInCategory(category: 2, trainingDevices: []),
+         TrainingDeviceInCategory(category: 3, trainingDevices: []),
+         TrainingDeviceInCategory(category: 4, trainingDevices: [])]
     }
 
+    @IBAction func showInfoView(_ sender: Any) {
+        let alert = UIAlertController(title: "FitForYou",
+                message: "\nCreated by: Markus Bastian\nInspired by: Sabine Bastian", preferredStyle: UIAlertController.Style.alert)
+        let okAction = UIAlertAction(title: "Ok", style: .default) { _ in
+            AudioServicesPlaySystemSound(SystemSoundID(1001))
+        }
+        alert.addAction(okAction)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     override func setEditing (_ editing:Bool, animated:Bool)
     {
         super.setEditing(editing,animated:animated)
@@ -36,25 +57,41 @@ class TrainingDeviceTableViewController: UITableViewController {
         let propertyListEncoder = PropertyListEncoder()
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         let archiveURL = documentsDirectory.appendingPathComponent("trainingDevices_test").appendingPathExtension("plist")
-        let encodedtrainingDevices = try? propertyListEncoder.encode(trainingDevices)
+        let encodedtrainingDevices = try? propertyListEncoder.encode(trainingDevicesInCategories)
         try? encodedtrainingDevices?.write(to: archiveURL, options: .noFileProtection)
     }
     
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-        let movedTrainingDevice = trainingDevices.remove(at: fromIndexPath.row)
-        trainingDevices.insert(movedTrainingDevice, at: to.row)
+        let movedTrainingDevice = trainingDevicesInCategories[fromIndexPath.section].trainingDevices.remove(at: fromIndexPath.row)
+        trainingDevicesInCategories[to.section].trainingDevices.insert(movedTrainingDevice, at: to.row)
         
         saveTableData()
     }
 
+    override func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
+        return sourceIndexPath.section == proposedDestinationIndexPath.section ? proposedDestinationIndexPath : sourceIndexPath
+    }
+
     fileprivate func loadTableData() {
+        var decodedtrainingDevices: [TrainingDeviceInCategory]? = nil
         let propertyListDecoder = PropertyListDecoder()
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         let archiveURL = documentsDirectory.appendingPathComponent("trainingDevices_test").appendingPathExtension("plist")
         if let retrievedtrainingDeviceData = try? Data(contentsOf: archiveURL),
-           let decodedtrainingDevices = try?
-            propertyListDecoder.decode(Array<TrainingDevice>.self, from: retrievedtrainingDeviceData) {
-            trainingDevices = decodedtrainingDevices
+            let decodedtrainingDevicesForHere = try?
+            propertyListDecoder.decode(Array<TrainingDeviceInCategory>.self, from: retrievedtrainingDeviceData) {
+            trainingDevicesInCategories = decodedtrainingDevicesForHere
+            decodedtrainingDevices = decodedtrainingDevicesForHere
+        }
+        if decodedtrainingDevices == nil {
+            if let retrievedtrainingDeviceData = try? Data(contentsOf: archiveURL),
+               let decodedtrainingDevices = try?
+                propertyListDecoder.decode(Array<TrainingDevice>.self, from: retrievedtrainingDeviceData) {
+                trainingDevices = decodedtrainingDevices
+                for trainingDevice in trainingDevices {
+                    trainingDevicesInCategories[trainingDevice.kategorie!].trainingDevices.append(trainingDevice)
+                }
+            }
         }
     }
     
@@ -62,14 +99,19 @@ class TrainingDeviceTableViewController: UITableViewController {
         super.viewWillAppear(animated)
         
         loadTableData()
+//        saveTableData()
         tableView.reloadData()
     }
     
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return trainingDevices.count
+        return trainingDevicesInCategories[section].trainingDevices.count
     }
     
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return trainingDevicesInCategories.count
+    }
+
     fileprivate func buildCheckmarkDictionary() {
         checkMarkInRows = [:]
         for cell in tableView.visibleCells {
@@ -85,7 +127,7 @@ class TrainingDeviceTableViewController: UITableViewController {
         let trainingDeviceToEdit: TrainingDevice?
         if let cell = sender as? UITableViewCell,
            let indexPath = tableView.indexPath(for: cell) {
-            trainingDeviceToEdit = trainingDevices[indexPath.row]
+            trainingDeviceToEdit = trainingDevicesInCategories[indexPath.section].trainingDevices[indexPath.row]
         } else {
             trainingDeviceToEdit = nil
         }
@@ -110,9 +152,9 @@ class TrainingDeviceTableViewController: UITableViewController {
         }
         
         if let selectedIndexPath = tableView.indexPathForSelectedRow {
-            trainingDevices[selectedIndexPath.row] = trainingDevice
+            trainingDevicesInCategories[selectedIndexPath.section].trainingDevices[selectedIndexPath.row] = trainingDevice
         } else {
-            trainingDevices.append(trainingDevice)
+            trainingDevicesInCategories[trainingDevice.kategorie ?? 0].trainingDevices.append(trainingDevice)
         }
         
         saveTableData()
@@ -121,7 +163,7 @@ class TrainingDeviceTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: PropertyKeys.trainingDeviceCell, for: indexPath)
              
-        let trainingDevice = trainingDevices[indexPath.row]
+        let trainingDevice = trainingDevicesInCategories[indexPath.section].trainingDevices[indexPath.row]
         var content = cell.defaultContentConfiguration()
         content.text = trainingDevice.bezeichnung + " " + String(trainingDevice.nummer)
         content.secondaryText = trainingDevice.description
@@ -147,10 +189,27 @@ class TrainingDeviceTableViewController: UITableViewController {
         return swipeConfig
     }
     
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String {
+        return deviceCategories[section].rawValue
+    }
+
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let label = UILabel()
+        label.text = deviceCategories[section].rawValue
+        label.font = UIFont.systemFont(ofSize: 20.0, weight: .bold)
+        label.textColor = .white
+        label.sizeToFit()
+        return label
+    }
+
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 40.0
+    }
+    
     func contextualDeleteAction(forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
         let deleteAction = UIContextualAction(style: .destructive, title: nil,
         handler: { (action, view, completionHandler) in            
-            self.trainingDevices.remove(at: indexPath.row)
+            self.trainingDevicesInCategories[indexPath.section].trainingDevices.remove(at: indexPath.row)
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
             self.saveTableData()
             completionHandler(true)

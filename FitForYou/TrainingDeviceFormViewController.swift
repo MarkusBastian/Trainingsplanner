@@ -2,7 +2,7 @@
 //  trainingDeviceFormViewController.swift
 //  FavoritetrainingDevice
 //
-//  Created by Markus B. on 29.03.24.
+//  Created by Markus B. on 01.04.24.
 //
 
 import UIKit
