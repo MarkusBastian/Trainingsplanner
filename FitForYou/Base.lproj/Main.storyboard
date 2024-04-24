@@ -169,12 +169,6 @@
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                 </subviews>
-                                <constraints>
-                                    <constraint firstItem="Qwm-lN-Kse" firstAttribute="height" secondItem="9Ms-Uu-Heg" secondAttribute="height" id="GJA-UM-pfd"/>
-                                    <constraint firstItem="uqw-ia-7EH" firstAttribute="height" secondItem="9Ms-Uu-Heg" secondAttribute="height" id="NMu-Gg-9lz"/>
-                                    <constraint firstItem="ZDt-9H-zso" firstAttribute="height" secondItem="9Ms-Uu-Heg" secondAttribute="height" id="sk7-Jm-NRw"/>
-                                    <constraint firstItem="5BH-RZ-lV3" firstAttribute="height" secondItem="9Ms-Uu-Heg" secondAttribute="height" id="tvv-mK-sZI"/>
-                                </constraints>
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="1la-jA-Pb4"/>

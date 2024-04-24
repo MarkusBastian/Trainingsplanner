@@ -64,7 +64,11 @@ class TrainingDeviceFormViewController: UIViewController, UIPickerViewDelegate, 
             kommentar.text = unwrappedtrainingDevice.kommentar
             kategorie.text = pickerData[unwrappedtrainingDevice.kategorie ?? 0].rawValue
             categoryPicker.selectRow(unwrappedtrainingDevice.kategorie ?? 0, inComponent: 0, animated: true)
+        } else {
+            kategorie.text = pickerData[0].rawValue
+            categoryPicker.selectRow(0, inComponent: 0, animated: true)
         }
+        
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {

@@ -10,11 +10,21 @@ class TrainingDeviceTableViewController: UITableViewController {
     
     var inSwipe: Bool = false
     var myEdit: Bool = false
+    var illegalMove: Bool = false
     var trainingDevices: [TrainingDevice] = []
     var checkMarkInRows: [Int: Bool] = [:]
     var trainingDevicesInCategories: [TrainingDeviceInCategory] = []
     var deviceCategories: [DeviceCategory] = [DeviceCategory] ()
 
+    
+    fileprivate func initTrainingsCategories() {
+        trainingDevicesInCategories =
+        [TrainingDeviceInCategory(category: 0, trainingDevices: []),
+         TrainingDeviceInCategory(category: 1, trainingDevices: []),
+         TrainingDeviceInCategory(category: 2, trainingDevices: []),
+         TrainingDeviceInCategory(category: 3, trainingDevices: []),
+         TrainingDeviceInCategory(category: 4, trainingDevices: [])]
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,12 +32,7 @@ class TrainingDeviceTableViewController: UITableViewController {
         navigationItem.leftBarButtonItem = editButtonItem
         navigationItem.leftBarButtonItem?.title = "Bearbeiten"
         deviceCategories = [DeviceCategory.warmup, DeviceCategory.legs, DeviceCategory.back, DeviceCategory.abdominal, DeviceCategory.arms]
-        trainingDevicesInCategories =
-        [TrainingDeviceInCategory(category: 0, trainingDevices: []),
-         TrainingDeviceInCategory(category: 1, trainingDevices: []),
-         TrainingDeviceInCategory(category: 2, trainingDevices: []),
-         TrainingDeviceInCategory(category: 3, trainingDevices: []),
-         TrainingDeviceInCategory(category: 4, trainingDevices: [])]
+        initTrainingsCategories()
     }
 
     @IBAction func showInfoView(_ sender: Any) {
@@ -64,11 +69,19 @@ class TrainingDeviceTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
         let movedTrainingDevice = trainingDevicesInCategories[fromIndexPath.section].trainingDevices.remove(at: fromIndexPath.row)
         trainingDevicesInCategories[to.section].trainingDevices.insert(movedTrainingDevice, at: to.row)
-        
+        if illegalMove {
+            AudioServicesPlaySystemSound(1256)
+            illegalMove = false
+        }
         saveTableData()
     }
 
     override func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
+        if sourceIndexPath.section != proposedDestinationIndexPath.section {
+            illegalMove = true
+        } else {
+            illegalMove = false
+        }
         return sourceIndexPath.section == proposedDestinationIndexPath.section ? proposedDestinationIndexPath : sourceIndexPath
     }
 
@@ -84,12 +97,13 @@ class TrainingDeviceTableViewController: UITableViewController {
             decodedtrainingDevices = decodedtrainingDevicesForHere
         }
         if decodedtrainingDevices == nil {
+            initTrainingsCategories()
             if let retrievedtrainingDeviceData = try? Data(contentsOf: archiveURL),
                let decodedtrainingDevices = try?
                 propertyListDecoder.decode(Array<TrainingDevice>.self, from: retrievedtrainingDeviceData) {
                 trainingDevices = decodedtrainingDevices
                 for trainingDevice in trainingDevices {
-                    trainingDevicesInCategories[trainingDevice.kategorie!].trainingDevices.append(trainingDevice)
+                    trainingDevicesInCategories[trainingDevice.kategorie ?? 0].trainingDevices.append(trainingDevice)
                 }
             }
         }
@@ -99,7 +113,6 @@ class TrainingDeviceTableViewController: UITableViewController {
         super.viewWillAppear(animated)
         
         loadTableData()
-//        saveTableData()
         tableView.reloadData()
     }
     
@@ -115,10 +128,12 @@ class TrainingDeviceTableViewController: UITableViewController {
     fileprivate func buildCheckmarkDictionary() {
         checkMarkInRows = [:]
         for cell in tableView.visibleCells {
+            let indexPath = tableView.indexPath(for: cell)
+            let key: Int = indexPath!.section * 100 +  indexPath!.row
             if (cell.accessoryType == .checkmark) {
-                checkMarkInRows[tableView.indexPath(for: cell)!.row] = true
+                checkMarkInRows[key] = true
             } else {
-                checkMarkInRows[tableView.indexPath(for: cell)!.row] = false
+                checkMarkInRows[key] = false
             }
         }
     }
@@ -152,11 +167,15 @@ class TrainingDeviceTableViewController: UITableViewController {
         }
         
         if let selectedIndexPath = tableView.indexPathForSelectedRow {
-            trainingDevicesInCategories[selectedIndexPath.section].trainingDevices[selectedIndexPath.row] = trainingDevice
+            if selectedIndexPath.section == trainingDevice.kategorie {
+                trainingDevicesInCategories[selectedIndexPath.section].trainingDevices[selectedIndexPath.row] = trainingDevice
+            } else {
+                trainingDevicesInCategories[selectedIndexPath.section].trainingDevices.remove(at: selectedIndexPath.row)
+                trainingDevicesInCategories[trainingDevice.kategorie ?? 0].trainingDevices.append(trainingDevice)
+            }
         } else {
             trainingDevicesInCategories[trainingDevice.kategorie ?? 0].trainingDevices.append(trainingDevice)
         }
-        
         saveTableData()
     }
     
@@ -164,12 +183,15 @@ class TrainingDeviceTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: PropertyKeys.trainingDeviceCell, for: indexPath)
              
         let trainingDevice = trainingDevicesInCategories[indexPath.section].trainingDevices[indexPath.row]
+        if trainingDevice.kategorie == nil {
+            trainingDevicesInCategories[indexPath.section].trainingDevices[indexPath.row].kategorie = 0
+        }
         var content = cell.defaultContentConfiguration()
         content.text = trainingDevice.bezeichnung + " " + String(trainingDevice.nummer)
         content.secondaryText = trainingDevice.description
         cell.showsReorderControl = true
         cell.contentConfiguration = content
-        cell.accessoryType = checkMarkInRows[indexPath.row] == true ? .checkmark : .none
+        cell.accessoryType = checkMarkInRows[indexPath.section * 100 + indexPath.row] == true ? .checkmark : .none
         return cell
     }
         
