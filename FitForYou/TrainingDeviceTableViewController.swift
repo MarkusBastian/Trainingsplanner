@@ -36,13 +36,8 @@ class TrainingDeviceTableViewController: UITableViewController {
     }
 
     @IBAction func showInfoView(_ sender: Any) {
-        let alert = UIAlertController(title: "FitForYou",
-                message: "\nCreated by: Markus Bastian\nInspired by: Sabine Bastian", preferredStyle: UIAlertController.Style.alert)
-        let okAction = UIAlertAction(title: "Ok", style: .default) { _ in
-            AudioServicesPlaySystemSound(SystemSoundID(1001))
-        }
-        alert.addAction(okAction)
-        self.present(alert, animated: true, completion: nil)
+       let infoPopup = InfoPopupController()
+        infoPopup.appear(sender: self)
     }
     
     override func setEditing (_ editing:Bool, animated:Bool)
