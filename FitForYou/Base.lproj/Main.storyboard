@@ -3,7 +3,7 @@
     <device id="retina6_72" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -54,9 +54,10 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Trainingsplan" id="HkE-HG-Ylf">
                         <rightBarButtonItems>
-                            <barButtonItem systemItem="add" id="sEp-s4-2KD">
+                            <barButtonItem title="Item" image="gearshape.fill" catalog="system" id="sEp-s4-2KD">
                                 <connections>
-                                    <segue destination="Jdx-qb-Jda" kind="show" identifier="AddTrainingDevice" destinationCreationSelector="addTrainingDevice:" id="wJO-3P-Bh6"/>
+                                    <action selector="settingsForTrainingsPlanner:" destination="qoV-NZ-5sM" id="28z-iN-WdY"/>
+                                    <segue destination="JsN-kf-DWV" kind="show" destinationCreationSelector="settingsForTrainingsDevices:" id="rfd-L3-uct"/>
                                 </connections>
                             </barButtonItem>
                             <barButtonItem title="Info" image="info" catalog="system" changesSelectionAsPrimaryAction="YES" id="SpP-cT-DjI">
@@ -68,7 +69,6 @@
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oUO-M2-GpA" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="Uty-c0-F42" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="1061.8604651162791" y="138.41201716738198"/>
         </scene>
@@ -188,19 +188,64 @@
                         <outlet property="kategorie" destination="1lc-Ye-DN8" id="lNr-PI-ogy"/>
                         <outlet property="kommentar" destination="ZDt-9H-zso" id="AA8-6O-a6M"/>
                         <outlet property="nummer" destination="5BH-RZ-lV3" id="1Z5-xW-DBY"/>
-                        <segue destination="Uty-c0-F42" kind="unwind" identifier="UnwindTrainingDevice" unwindAction="unwindToRootViewControllerWithSegue:" id="0tQ-j4-fbU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JRJ-p2-DTp" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1860" y="138.41201716738198"/>
         </scene>
+        <!--Einstellungen-->
+        <scene sceneID="ejD-KL-pym">
+            <objects>
+                <tableViewController title="Einstellungen" id="JsN-kf-DWV" customClass="TrainingSettingsTableViewController" customModule="FitForYou" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="Pd2-WR-kvy">
+                        <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TrainingDeviceCell" textLabel="skM-ry-VRY" detailTextLabel="1jP-Ry-5Af" style="IBUITableViewCellStyleValue1" id="Ymd-ou-tZ0">
+                                <rect key="frame" x="0.0" y="50" width="430" height="43.666667938232422"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Ymd-ou-tZ0" id="oWs-Vv-Qob">
+                                    <rect key="frame" x="0.0" y="0.0" width="430" height="43.666667938232422"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="skM-ry-VRY">
+                                            <rect key="frame" x="20" y="15" width="25" height="14.333333333333334"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="1jP-Ry-5Af">
+                                            <rect key="frame" x="377.33333333333331" y="15" width="32.666666666666664" height="14.333333333333334"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="JsN-kf-DWV" id="sKa-Zh-Xri"/>
+                            <outlet property="delegate" destination="JsN-kf-DWV" id="CiI-kN-Pbq"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="qtw-vH-NML"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ctc-Px-hfz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1860" y="-523"/>
+        </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="wJO-3P-Bh6"/>
-    </inferredMetricsTieBreakers>
     <resources>
+        <image name="gearshape.fill" catalog="system" width="128" height="123"/>
         <image name="info" catalog="system" width="93" height="128"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemGray4Color">
             <color red="0.81960784310000001" green="0.81960784310000001" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

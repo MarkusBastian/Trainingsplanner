@@ -147,11 +147,10 @@ class TrainingDeviceTableViewController: UITableViewController {
         return TrainingDeviceFormViewController(coder: coder, trainingDevice: trainingDeviceToEdit)
     }
     
-    @IBSegueAction func addTrainingDevice(_ coder: NSCoder) -> TrainingDeviceFormViewController? {
-        buildCheckmarkDictionary()
-        return TrainingDeviceFormViewController(coder: coder)
+    @IBSegueAction func settingsForTrainingsDevices(_ coder: NSCoder) -> TrainingSettingsTableViewController? {
+        return TrainingSettingsTableViewController(coder: coder, trainingDevices: trainingDevicesInCategories)
     }
-    
+        
     @IBAction func unwindToRootViewController(segue: UIStoryboardSegue) {
         guard
             let trainingDeviceFormViewController = segue.source as?

@@ -18,6 +18,7 @@
 		E8D8EF6E2BD7BCE700900AC7 /* TrainingsDeviceInCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8D8EF6D2BD7BCE700900AC7 /* TrainingsDeviceInCategory.swift */; };
 		E8DD4E412BB6E9F20090389A /* TrainingDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8DD4E402BB6E9F20090389A /* TrainingDevice.swift */; };
 		E8DD4E432BB6ECDA0090389A /* TrainingDeviceFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8DD4E422BB6ECDA0090389A /* TrainingDeviceFormViewController.swift */; };
+		E8DF3A412C0CAA280056D55A /* TrainingSettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8DF3A402C0CAA280056D55A /* TrainingSettingsTableViewController.swift */; };
 		E8DFB9C42BCFCCED001202EF /* DeviceCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8DFB9C32BCFCCED001202EF /* DeviceCategory.swift */; };
 /* End PBXBuildFile section */
 
@@ -35,6 +36,7 @@
 		E8D8EF6D2BD7BCE700900AC7 /* TrainingsDeviceInCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingsDeviceInCategory.swift; sourceTree = "<group>"; };
 		E8DD4E402BB6E9F20090389A /* TrainingDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingDevice.swift; sourceTree = "<group>"; };
 		E8DD4E422BB6ECDA0090389A /* TrainingDeviceFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingDeviceFormViewController.swift; sourceTree = "<group>"; };
+		E8DF3A402C0CAA280056D55A /* TrainingSettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingSettingsTableViewController.swift; sourceTree = "<group>"; };
 		E8DFB9C32BCFCCED001202EF /* DeviceCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceCategory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -73,6 +75,7 @@
 				1830B16723A3064200FF29B5 /* SceneDelegate.swift */,
 				1830B17923A3067E00FF29B5 /* TrainingDeviceTableViewController.swift */,
 				E8DD4E422BB6ECDA0090389A /* TrainingDeviceFormViewController.swift */,
+				E8DF3A402C0CAA280056D55A /* TrainingSettingsTableViewController.swift */,
 				E8DD4E402BB6E9F20090389A /* TrainingDevice.swift */,
 				E8DFB9C32BCFCCED001202EF /* DeviceCategory.swift */,
 				1830B16B23A3064200FF29B5 /* Main.storyboard */,
@@ -166,6 +169,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E8CF59322BFDFD3600D28890 /* InfoPopupController.swift in Sources */,
+				E8DF3A412C0CAA280056D55A /* TrainingSettingsTableViewController.swift in Sources */,
 				E8DD4E432BB6ECDA0090389A /* TrainingDeviceFormViewController.swift in Sources */,
 				1830B16623A3064200FF29B5 /* AppDelegate.swift in Sources */,
 				E8D8EF6E2BD7BCE700900AC7 /* TrainingsDeviceInCategory.swift in Sources */,
