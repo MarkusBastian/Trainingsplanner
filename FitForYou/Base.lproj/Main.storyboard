@@ -43,7 +43,7 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" systemColor="systemGray4Color"/>
                                 <connections>
-                                    <segue destination="Jdx-qb-Jda" kind="show" identifier="EditTrainingDevice" destinationCreationSelector="editTrainingDevice:sender:" id="lBM-ky-b8A"/>
+                                    <segue destination="Jdx-qb-Jda" kind="show" destinationCreationSelector="editTrainingDevice:" id="7sr-T6-zNl"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -54,10 +54,10 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Trainingsplan" id="HkE-HG-Ylf">
                         <rightBarButtonItems>
-                            <barButtonItem title="Item" image="gearshape.fill" catalog="system" id="sEp-s4-2KD">
+                            <barButtonItem title="Einstellungen" image="gearshape.fill" catalog="system" id="sEp-s4-2KD">
                                 <connections>
-                                    <action selector="settingsForTrainingsPlanner:" destination="qoV-NZ-5sM" id="28z-iN-WdY"/>
-                                    <segue destination="JsN-kf-DWV" kind="show" destinationCreationSelector="settingsForTrainingsDevices:" id="rfd-L3-uct"/>
+                                    <action selector="unwindToRootViewController:" destination="qoV-NZ-5sM" id="8HG-mC-WGS"/>
+                                    <segue destination="JsN-kf-DWV" kind="show" destinationCreationSelector="settingsForTrainingsDevices:" id="BY5-vw-1N7"/>
                                 </connections>
                             </barButtonItem>
                             <barButtonItem title="Info" image="info" catalog="system" changesSelectionAsPrimaryAction="YES" id="SpP-cT-DjI">
@@ -192,12 +192,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JRJ-p2-DTp" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1860" y="138.41201716738198"/>
+            <point key="canvasLocation" x="2212" y="292"/>
         </scene>
         <!--Einstellungen-->
         <scene sceneID="ejD-KL-pym">
             <objects>
-                <tableViewController title="Einstellungen" id="JsN-kf-DWV" customClass="TrainingSettingsTableViewController" customModule="FitForYou" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="JsN-kf-DWV" customClass="TrainingSettingsTableViewController" customModule="FitForYou" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="Pd2-WR-kvy">
                         <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -233,11 +233,17 @@
                             <outlet property="delegate" destination="JsN-kf-DWV" id="CiI-kN-Pbq"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="qtw-vH-NML"/>
+                    <navigationItem key="navigationItem" title="Einstellungen" largeTitleDisplayMode="never" id="qtw-vH-NML">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="wVo-8t-bNE">
+                            <connections>
+                                <action selector="unwindToSettingViewControllerWithSegue:" destination="JsN-kf-DWV" id="dSi-Va-Ciy"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ctc-Px-hfz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1860" y="-523"/>
+            <point key="canvasLocation" x="2212" y="-577"/>
         </scene>
     </scenes>
     <resources>
@@ -247,10 +253,10 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray4Color">
-            <color red="0.81960784310000001" green="0.81960784310000001" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.81960784313725488" green="0.81960784313725488" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemTealColor">
-            <color red="0.18823529410000001" green="0.69019607839999997" blue="0.78039215689999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.18823529411764706" green="0.69019607843137254" blue="0.7803921568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

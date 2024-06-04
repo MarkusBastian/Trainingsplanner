@@ -9,7 +9,7 @@ import UIKit
 
 class TrainingSettingsTableViewController: UITableViewController {
 
-    var trainingDevicesInCategories: [TrainingDeviceInCategory] = []
+    var trainingDevicesInCategories: [TrainingDeviceInCategory]?
     var deviceCategories: [DeviceCategory] = [DeviceCategory] ()
 
     struct PropertyKeys {
@@ -39,11 +39,11 @@ class TrainingSettingsTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return trainingDevicesInCategories.count
+        return trainingDevicesInCategories!.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return trainingDevicesInCategories[section].trainingDevices.count
+        return trainingDevicesInCategories![section].trainingDevices.count
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String {
@@ -58,6 +58,27 @@ class TrainingSettingsTableViewController: UITableViewController {
         label.sizeToFit()
         return label
     }
+ 
+    @IBAction func unwindToSettingViewController(segue: UIStoryboardSegue) {
+        guard
+            let trainingDeviceFormViewController = segue.source as?
+                TrainingDeviceFormViewController,
+            let trainingDevice = trainingDeviceFormViewController.trainingDevice
+        else {
+            return
+        }
+
+        if let selectedIndexPath = tableView.indexPathForSelectedRow {
+            if selectedIndexPath.section == trainingDevice.kategorie {
+                trainingDevicesInCategories![selectedIndexPath.section].trainingDevices[selectedIndexPath.row] = trainingDevice
+            } else {
+                trainingDevicesInCategories![selectedIndexPath.section].trainingDevices.remove(at: selectedIndexPath.row)
+                trainingDevicesInCategories![trainingDevice.kategorie ?? 0].trainingDevices.append(trainingDevice)
+            }
+        } else {
+            trainingDevicesInCategories![trainingDevice.kategorie ?? 0].trainingDevices.append(trainingDevice)
+        }
+    }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 40.0
@@ -66,9 +87,9 @@ class TrainingSettingsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: PropertyKeys.trainingDeviceCell, for: indexPath)
              
-        let trainingDevice = trainingDevicesInCategories[indexPath.section].trainingDevices[indexPath.row]
+        let trainingDevice = trainingDevicesInCategories![indexPath.section].trainingDevices[indexPath.row]
         if trainingDevice.kategorie == nil {
-            trainingDevicesInCategories[indexPath.section].trainingDevices[indexPath.row].kategorie = 0
+            trainingDevicesInCategories![indexPath.section].trainingDevices[indexPath.row].kategorie = 0
         }
        
         cell.textLabel?.text = trainingDevice.bezeichnung

@@ -132,7 +132,7 @@ class TrainingDeviceTableViewController: UITableViewController {
             }
         }
     }
-    
+      
     @IBSegueAction func editTrainingDevice(_ coder: NSCoder, sender: Any?) -> TrainingDeviceFormViewController? {
         let trainingDeviceToEdit: TrainingDevice?
         if let cell = sender as? UITableViewCell,
@@ -147,32 +147,24 @@ class TrainingDeviceTableViewController: UITableViewController {
         return TrainingDeviceFormViewController(coder: coder, trainingDevice: trainingDeviceToEdit)
     }
     
-    @IBSegueAction func settingsForTrainingsDevices(_ coder: NSCoder) -> TrainingSettingsTableViewController? {
-        return TrainingSettingsTableViewController(coder: coder, trainingDevices: trainingDevicesInCategories)
-    }
-        
     @IBAction func unwindToRootViewController(segue: UIStoryboardSegue) {
         guard
-            let trainingDeviceFormViewController = segue.source as?
-                TrainingDeviceFormViewController,
-            let trainingDevice = trainingDeviceFormViewController.trainingDevice
+            let trainingsSettingsTableViewController = segue.source as?
+                TrainingSettingsTableViewController,
+
+                let trainingDevicesInCategories = trainingsSettingsTableViewController.trainingDevicesInCategories
         else {
             return
         }
-        
-        if let selectedIndexPath = tableView.indexPathForSelectedRow {
-            if selectedIndexPath.section == trainingDevice.kategorie {
-                trainingDevicesInCategories[selectedIndexPath.section].trainingDevices[selectedIndexPath.row] = trainingDevice
-            } else {
-                trainingDevicesInCategories[selectedIndexPath.section].trainingDevices.remove(at: selectedIndexPath.row)
-                trainingDevicesInCategories[trainingDevice.kategorie ?? 0].trainingDevices.append(trainingDevice)
-            }
-        } else {
-            trainingDevicesInCategories[trainingDevice.kategorie ?? 0].trainingDevices.append(trainingDevice)
-        }
+        self.trainingDevicesInCategories = trainingDevicesInCategories
         saveTableData()
     }
     
+    @IBSegueAction func settingsForTrainingsDevices(_ coder: NSCoder) -> TrainingSettingsTableViewController? {
+        return  TrainingSettingsTableViewController(coder: coder, trainingDevices: trainingDevicesInCategories)
+        
+    }
+      
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: PropertyKeys.trainingDeviceCell, for: indexPath)
              
