@@ -42,6 +42,9 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" systemColor="systemGray4Color"/>
+                                <connections>
+                                    <segue destination="Jdx-qb-Jda" kind="show" destinationCreationSelector="editTrainingsDevice:sender:" id="HlK-gd-267"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -244,6 +247,9 @@
             <point key="canvasLocation" x="2212" y="-577"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="GiR-es-URU"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="gearshape.fill" catalog="system" width="128" height="123"/>
         <image name="info" catalog="system" width="93" height="128"/>
