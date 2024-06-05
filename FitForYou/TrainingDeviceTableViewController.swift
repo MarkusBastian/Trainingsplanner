@@ -133,21 +133,8 @@ class TrainingDeviceTableViewController: UITableViewController {
         }
     }
       
-    @IBSegueAction func editTrainingDevice(_ coder: NSCoder, sender: Any?) -> TrainingDeviceFormViewController? {
-        let trainingDeviceToEdit: TrainingDevice?
-        if let cell = sender as? UITableViewCell,
-           let indexPath = tableView.indexPath(for: cell) {
-            trainingDeviceToEdit = trainingDevicesInCategories[indexPath.section].trainingDevices[indexPath.row]
-        } else {
-            trainingDeviceToEdit = nil
-        }
-        
-        buildCheckmarkDictionary()
-        
-        return TrainingDeviceFormViewController(coder: coder, trainingDevice: trainingDeviceToEdit)
-    }
-    
-    @IBAction func unwindToRootViewController(segue: UIStoryboardSegue) {
+   
+    @IBAction func unwindFromSettingsViewController(segue: UIStoryboardSegue) {
         guard
             let trainingsSettingsTableViewController = segue.source as?
                 TrainingSettingsTableViewController,
@@ -162,9 +149,44 @@ class TrainingDeviceTableViewController: UITableViewController {
     
     @IBSegueAction func settingsForTrainingsDevices(_ coder: NSCoder) -> TrainingSettingsTableViewController? {
         return  TrainingSettingsTableViewController(coder: coder, trainingDevices: trainingDevicesInCategories)
+     }
+    
+    @IBSegueAction func editTrainingsDevice(_ coder: NSCoder, sender: Any?) -> TrainingDeviceFormViewController? {
+        let trainingDeviceToEdit: TrainingDevice?
+        if let cell = sender as? UITableViewCell,
+           let indexPath = tableView.indexPath(for: cell) {
+            trainingDeviceToEdit = trainingDevicesInCategories[indexPath.section].trainingDevices[indexPath.row]
+        } else {
+            trainingDeviceToEdit = nil
+        }
         
+        buildCheckmarkDictionary()
+        
+        return TrainingDeviceFormViewController(coder: coder, trainingDevice: trainingDeviceToEdit)
     }
-      
+
+    @IBAction func unwindFromDeviceFormViewController(segue: UIStoryboardSegue) {
+        guard
+            let trainingDeviceFormViewController = segue.source as?
+                TrainingDeviceFormViewController,
+            let trainingDevice = trainingDeviceFormViewController.trainingDevice
+        else {
+            return
+        }
+        
+        if let selectedIndexPath = tableView.indexPathForSelectedRow {
+            if selectedIndexPath.section == trainingDevice.kategorie {
+                trainingDevicesInCategories[selectedIndexPath.section].trainingDevices[selectedIndexPath.row] = trainingDevice
+            } else {
+                trainingDevicesInCategories[selectedIndexPath.section].trainingDevices.remove(at: selectedIndexPath.row)
+                trainingDevicesInCategories[trainingDevice.kategorie ?? 0].trainingDevices.append(trainingDevice)
+            }
+        } else {
+            trainingDevicesInCategories[trainingDevice.kategorie ?? 0].trainingDevices.append(trainingDevice)
+        }
+        saveTableData()
+    }
+ 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: PropertyKeys.trainingDeviceCell, for: indexPath)
              

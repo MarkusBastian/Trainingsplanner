@@ -59,6 +59,10 @@ class TrainingSettingsTableViewController: UITableViewController {
         return label
     }
  
+    @IBSegueAction func addTrainingsDevice(_ coder: NSCoder) -> TrainingDeviceFormViewController? {
+        return TrainingDeviceFormViewController(coder: coder)
+    }
+    
     @IBAction func unwindToSettingViewController(segue: UIStoryboardSegue) {
         guard
             let trainingDeviceFormViewController = segue.source as?
@@ -68,16 +72,7 @@ class TrainingSettingsTableViewController: UITableViewController {
             return
         }
 
-        if let selectedIndexPath = tableView.indexPathForSelectedRow {
-            if selectedIndexPath.section == trainingDevice.kategorie {
-                trainingDevicesInCategories![selectedIndexPath.section].trainingDevices[selectedIndexPath.row] = trainingDevice
-            } else {
-                trainingDevicesInCategories![selectedIndexPath.section].trainingDevices.remove(at: selectedIndexPath.row)
-                trainingDevicesInCategories![trainingDevice.kategorie ?? 0].trainingDevices.append(trainingDevice)
-            }
-        } else {
-            trainingDevicesInCategories![trainingDevice.kategorie ?? 0].trainingDevices.append(trainingDevice)
-        }
+        trainingDevicesInCategories![trainingDevice.kategorie ?? 0].trainingDevices.append(trainingDevice)
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

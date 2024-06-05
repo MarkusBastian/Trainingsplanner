@@ -42,9 +42,6 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" systemColor="systemGray4Color"/>
-                                <connections>
-                                    <segue destination="Jdx-qb-Jda" kind="show" destinationCreationSelector="editTrainingDevice:" id="7sr-T6-zNl"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -56,8 +53,8 @@
                         <rightBarButtonItems>
                             <barButtonItem title="Einstellungen" image="gearshape.fill" catalog="system" id="sEp-s4-2KD">
                                 <connections>
-                                    <action selector="unwindToRootViewController:" destination="qoV-NZ-5sM" id="8HG-mC-WGS"/>
-                                    <segue destination="JsN-kf-DWV" kind="show" destinationCreationSelector="settingsForTrainingsDevices:" id="BY5-vw-1N7"/>
+                                    <action selector="unwindFromSettingsViewControllerWithSegue:" destination="qoV-NZ-5sM" id="xAE-hF-Co4"/>
+                                    <segue destination="JsN-kf-DWV" kind="show" destinationCreationSelector="settingsForTrainingsDevices:" id="neV-YZ-2Ab"/>
                                 </connections>
                             </barButtonItem>
                             <barButtonItem title="Info" image="info" catalog="system" changesSelectionAsPrimaryAction="YES" id="SpP-cT-DjI">
@@ -237,6 +234,7 @@
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="wVo-8t-bNE">
                             <connections>
                                 <action selector="unwindToSettingViewControllerWithSegue:" destination="JsN-kf-DWV" id="dSi-Va-Ciy"/>
+                                <segue destination="Jdx-qb-Jda" kind="show" destinationCreationSelector="addTrainingsDevice:" id="GiR-es-URU"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
