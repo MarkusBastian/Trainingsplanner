@@ -56,7 +56,6 @@
                         <rightBarButtonItems>
                             <barButtonItem title="Einstellungen" image="gearshape.fill" catalog="system" id="sEp-s4-2KD">
                                 <connections>
-                                    <action selector="unwindFromSettingsViewControllerWithSegue:" destination="qoV-NZ-5sM" id="xAE-hF-Co4"/>
                                     <segue destination="JsN-kf-DWV" kind="show" destinationCreationSelector="settingsForTrainingsDevices:" id="neV-YZ-2Ab"/>
                                 </connections>
                             </barButtonItem>
@@ -188,9 +187,12 @@
                         <outlet property="kategorie" destination="1lc-Ye-DN8" id="lNr-PI-ogy"/>
                         <outlet property="kommentar" destination="ZDt-9H-zso" id="AA8-6O-a6M"/>
                         <outlet property="nummer" destination="5BH-RZ-lV3" id="1Z5-xW-DBY"/>
+                        <segue destination="9gK-Xc-suv" kind="unwind" identifier="UnwindTrainingDevice" unwindAction="unwindFromDeviceFormViewControllerWithSegue:" id="kZc-7r-HqV"/>
+                        <segue destination="9gK-Xc-suv" kind="unwind" identifier="UnwindToSettingsController" unwindAction="unwindToSettingViewControllerWithSegue:" id="zVr-2P-wYe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JRJ-p2-DTp" sceneMemberID="firstResponder"/>
+                <exit id="9gK-Xc-suv" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2212" y="292"/>
         </scene>
@@ -234,21 +236,31 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Einstellungen" largeTitleDisplayMode="never" id="qtw-vH-NML">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="wVo-8t-bNE">
-                            <connections>
-                                <action selector="unwindToSettingViewControllerWithSegue:" destination="JsN-kf-DWV" id="dSi-Va-Ciy"/>
-                                <segue destination="Jdx-qb-Jda" kind="show" destinationCreationSelector="addTrainingsDevice:" id="GiR-es-URU"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="add" id="wVo-8t-bNE">
+                                <connections>
+                                    <segue destination="Jdx-qb-Jda" kind="show" destinationCreationSelector="addTrainingsDevice:" id="GiR-es-URU"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Speichern" id="S69-ZD-ZRc">
+                                <connections>
+                                    <action selector="saveDevices:" destination="JsN-kf-DWV" id="yXm-s1-hUO"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
+                    <connections>
+                        <segue destination="vjA-rn-7M1" kind="unwind" identifier="UnwindFromSettings" unwindAction="unwindFromSettingsViewControllerWithSegue:" id="ZQG-Ws-9CF"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ctc-Px-hfz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="vjA-rn-7M1" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2212" y="-577"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="GiR-es-URU"/>
+        <segue reference="HlK-gd-267"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="gearshape.fill" catalog="system" width="128" height="123"/>

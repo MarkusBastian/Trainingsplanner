@@ -19,6 +19,7 @@ class TrainingDeviceFormViewController: UIViewController, UIPickerViewDelegate, 
     let categoryPicker = UIPickerView()
     var trainingDevice: TrainingDevice?
     var pickerData: [DeviceCategory] = [DeviceCategory] ()
+    var calledFromSettingsController: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,10 +36,12 @@ class TrainingDeviceFormViewController: UIViewController, UIPickerViewDelegate, 
 
     init?(coder: NSCoder, trainingDevice: TrainingDevice?) {
         self.trainingDevice = trainingDevice
+        self.calledFromSettingsController = false
         super.init(coder: coder)
     }
     
     required init?(coder: NSCoder) {
+        self.calledFromSettingsController = true
         super.init(coder: coder)
     }
     
@@ -52,7 +55,11 @@ class TrainingDeviceFormViewController: UIViewController, UIPickerViewDelegate, 
               let trainingsDeviceKategorie = kategorie else {return}
         trainingDevice = TrainingDevice(bezeichnung: trainingDeviceBezeichnung, nummer: trainingDeviceNummer, einstellung: trainingDeviceEinstellung, gewicht: trainingDeviceGewicht, kommentar: trainingDeviceKommentar, kategorie: trainingsDeviceKategorie)
         
-        performSegue(withIdentifier: "UnwindTrainingDevice", sender: self)
+        if calledFromSettingsController {
+            performSegue(withIdentifier: "UnwindToSettingsController", sender: self)
+        } else {
+            performSegue(withIdentifier: "UnwindTrainingDevice", sender: self)
+        }
     }
     
     func updateView() {

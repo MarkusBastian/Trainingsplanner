@@ -46,6 +46,12 @@ class TrainingSettingsTableViewController: UITableViewController {
         return trainingDevicesInCategories![section].trainingDevices.count
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        tableView.reloadData()
+    }
+
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String {
         return deviceCategories[section].rawValue
     }
@@ -61,6 +67,10 @@ class TrainingSettingsTableViewController: UITableViewController {
  
     @IBSegueAction func addTrainingsDevice(_ coder: NSCoder) -> TrainingDeviceFormViewController? {
         return TrainingDeviceFormViewController(coder: coder)
+    }
+    
+    @IBAction func saveDevices(_ sender: Any) {
+        performSegue(withIdentifier: "UnwindFromSettings", sender: self)
     }
     
     @IBAction func unwindToSettingViewController(segue: UIStoryboardSegue) {
