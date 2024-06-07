@@ -99,16 +99,42 @@ class TrainingSettingsTableViewController: UITableViewController {
        
         cell.textLabel?.text = trainingDevice.bezeichnung
         cell.detailTextLabel?.text = trainingDevice.nummer
+        if trainingDevice.deviceInPlan! {
+            cell.selectionStyle = .none
+            cell.textLabel?.textColor = .lightGray
+            cell.detailTextLabel?.textColor = .lightGray
+            let imgView = UIImageView(image: UIImage(systemName: "list.clipboard"))
+            cell.accessoryView = imgView
+        } else {
+            cell.selectionStyle = .default
+            cell.textLabel?.textColor = .black
+            cell.detailTextLabel?.textColor = .black
+            cell.accessoryType = .none
+        }
         return cell
     }
-  
-    /*
+   
+    override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        let trainingDevice = trainingDevicesInCategories![indexPath.section].trainingDevices[indexPath.row]
+        if trainingDevice.deviceInPlan! {
+            return nil
+        } else {
+            trainingDevicesInCategories![indexPath.section].trainingDevices[indexPath.row].deviceInPlan = true
+            tableView.reloadData()
+            return indexPath
+        }
+    }
+
+
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+        let trainingDevice = trainingDevicesInCategories![indexPath.section].trainingDevices[indexPath.row]
+        if trainingDevice.deviceInPlan! {
+            return false
+        } else {
+            return true
+        }
     }
-    */
 
     /*
     // Override to support editing the table view.

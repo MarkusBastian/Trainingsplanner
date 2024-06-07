@@ -53,7 +53,8 @@ class TrainingDeviceFormViewController: UIViewController, UIPickerViewDelegate, 
               let trainingDeviceGewicht = gewicht.text,
               let trainingDeviceKommentar = kommentar.text,
               let trainingsDeviceKategorie = kategorie else {return}
-        trainingDevice = TrainingDevice(bezeichnung: trainingDeviceBezeichnung, nummer: trainingDeviceNummer, einstellung: trainingDeviceEinstellung, gewicht: trainingDeviceGewicht, kommentar: trainingDeviceKommentar, kategorie: trainingsDeviceKategorie)
+
+        trainingDevice = TrainingDevice(bezeichnung: trainingDeviceBezeichnung, nummer: trainingDeviceNummer, einstellung: trainingDeviceEinstellung, gewicht: trainingDeviceGewicht, kommentar: trainingDeviceKommentar, kategorie: trainingsDeviceKategorie, deviceInPlan: false)
         
         if calledFromSettingsController {
             performSegue(withIdentifier: "UnwindToSettingsController", sender: self)

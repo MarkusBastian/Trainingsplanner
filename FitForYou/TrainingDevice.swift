@@ -14,6 +14,7 @@ struct TrainingDevice: Codable {
     var gewicht: String
     var kommentar: Optional<String>
     var kategorie: Optional<Int>
+    var deviceInPlan: Optional<Bool> = false
 
     var description: String {
         return "Einstellung: \(einstellung) Gewicht: \(gewicht)"

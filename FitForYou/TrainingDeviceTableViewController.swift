@@ -11,7 +11,6 @@ class TrainingDeviceTableViewController: UITableViewController {
     var inSwipe: Bool = false
     var myEdit: Bool = false
     var illegalMove: Bool = false
-    var trainingDevices: [TrainingDevice] = []
     var checkMarkInRows: [Int: Bool] = [:]
     var trainingDevicesInCategories: [TrainingDeviceInCategory] = []
     var deviceCategories: [DeviceCategory] = [DeviceCategory] ()
@@ -61,9 +60,28 @@ class TrainingDeviceTableViewController: UITableViewController {
         try? encodedtrainingDevices?.write(to: archiveURL, options: .noFileProtection)
     }
     
+    fileprivate func getRealRow (planIndexPath: IndexPath) -> Int {
+        var realRowIndex: Int = 0
+        var activeDevicesCounter = 0
+        
+        for i in 0...trainingDevicesInCategories[planIndexPath.section].trainingDevices.count - 1 {
+            if trainingDevicesInCategories[planIndexPath.section].trainingDevices[i].deviceInPlan! {
+                activeDevicesCounter += 1
+            }
+            if activeDevicesCounter - 1 == planIndexPath.row {
+                realRowIndex = i
+            }
+        }
+        
+        return realRowIndex
+    }
+    
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-        let movedTrainingDevice = trainingDevicesInCategories[fromIndexPath.section].trainingDevices.remove(at: fromIndexPath.row)
-        trainingDevicesInCategories[to.section].trainingDevices.insert(movedTrainingDevice, at: to.row)
+        var realRowFrom: Int = getRealRow(planIndexPath: fromIndexPath)
+        var realRowTo: Int = getRealRow(planIndexPath: to)
+        
+        let movedTrainingDevice = trainingDevicesInCategories[fromIndexPath.section].trainingDevices.remove(at: realRowFrom)
+        trainingDevicesInCategories[to.section].trainingDevices.insert(movedTrainingDevice, at: realRowTo)
         if illegalMove {
             AudioServicesPlaySystemSound(1256)
             illegalMove = false
@@ -81,28 +99,26 @@ class TrainingDeviceTableViewController: UITableViewController {
     }
 
     fileprivate func loadTableData() {
-        var decodedtrainingDevices: [TrainingDeviceInCategory]? = nil
         let propertyListDecoder = PropertyListDecoder()
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         let archiveURL = documentsDirectory.appendingPathComponent("trainingDevices_test").appendingPathExtension("plist")
         if let retrievedtrainingDeviceData = try? Data(contentsOf: archiveURL),
-            let decodedtrainingDevicesForHere = try?
+            let decodedtrainingDevices = try?
             propertyListDecoder.decode(Array<TrainingDeviceInCategory>.self, from: retrievedtrainingDeviceData) {
-            trainingDevicesInCategories = decodedtrainingDevicesForHere
-            decodedtrainingDevices = decodedtrainingDevicesForHere
+            trainingDevicesInCategories = decodedtrainingDevices
         }
-        if decodedtrainingDevices == nil {
-            initTrainingsCategories()
-            if let retrievedtrainingDeviceData = try? Data(contentsOf: archiveURL),
-               let decodedtrainingDevices = try?
-                propertyListDecoder.decode(Array<TrainingDevice>.self, from: retrievedtrainingDeviceData) {
-                trainingDevices = decodedtrainingDevices
-                for trainingDevice in trainingDevices {
-                    trainingDevicesInCategories[trainingDevice.kategorie ?? 0].trainingDevices.append(trainingDevice)
+        if trainingDevicesInCategories.count > 0 {
+            for i in 0...trainingDevicesInCategories.count - 1 {
+                if trainingDevicesInCategories[i].trainingDevices.count > 0 {
+                    for j in 0...trainingDevicesInCategories[i].trainingDevices.count - 1 {
+                        if trainingDevicesInCategories[i].trainingDevices[j].deviceInPlan == nil {
+                            trainingDevicesInCategories[i].trainingDevices[j].deviceInPlan = true
+                        }
+                    }
                 }
             }
         }
-    }
+   }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -113,7 +129,14 @@ class TrainingDeviceTableViewController: UITableViewController {
     
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return trainingDevicesInCategories[section].trainingDevices.count
+        var count: Int = 0
+        
+        for trainingsDevice in trainingDevicesInCategories[section].trainingDevices {
+            if trainingsDevice.deviceInPlan! {
+                count += 1
+            }
+        }
+        return count
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -132,7 +155,6 @@ class TrainingDeviceTableViewController: UITableViewController {
             }
         }
     }
-      
    
     @IBAction func unwindFromSettingsViewController(segue: UIStoryboardSegue) {
         guard
@@ -155,7 +177,7 @@ class TrainingDeviceTableViewController: UITableViewController {
         let trainingDeviceToEdit: TrainingDevice?
         if let cell = sender as? UITableViewCell,
            let indexPath = tableView.indexPath(for: cell) {
-            trainingDeviceToEdit = trainingDevicesInCategories[indexPath.section].trainingDevices[indexPath.row]
+            trainingDeviceToEdit = trainingDevicesInCategories[indexPath.section].trainingDevices[getRealRow(planIndexPath: indexPath)]
         } else {
             trainingDeviceToEdit = nil
         }
@@ -175,10 +197,11 @@ class TrainingDeviceTableViewController: UITableViewController {
         }
         
         if let selectedIndexPath = tableView.indexPathForSelectedRow {
+            var realRowIndex = getRealRow(planIndexPath: selectedIndexPath)
             if selectedIndexPath.section == trainingDevice.kategorie {
-                trainingDevicesInCategories[selectedIndexPath.section].trainingDevices[selectedIndexPath.row] = trainingDevice
+                trainingDevicesInCategories[selectedIndexPath.section].trainingDevices[realRowIndex] = trainingDevice
             } else {
-                trainingDevicesInCategories[selectedIndexPath.section].trainingDevices.remove(at: selectedIndexPath.row)
+                trainingDevicesInCategories[selectedIndexPath.section].trainingDevices.remove(at: realRowIndex)
                 trainingDevicesInCategories[trainingDevice.kategorie ?? 0].trainingDevices.append(trainingDevice)
             }
         } else {
@@ -190,9 +213,9 @@ class TrainingDeviceTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: PropertyKeys.trainingDeviceCell, for: indexPath)
              
-        let trainingDevice = trainingDevicesInCategories[indexPath.section].trainingDevices[indexPath.row]
+        let trainingDevice = trainingDevicesInCategories[indexPath.section].trainingDevices[getRealRow(planIndexPath: indexPath)]
         if trainingDevice.kategorie == nil {
-            trainingDevicesInCategories[indexPath.section].trainingDevices[indexPath.row].kategorie = 0
+            trainingDevicesInCategories[indexPath.section].trainingDevices[getRealRow(planIndexPath: indexPath)].kategorie = 0
         }
         var content = cell.defaultContentConfiguration()
         content.text = trainingDevice.bezeichnung + " " + String(trainingDevice.nummer)
@@ -239,13 +262,13 @@ class TrainingDeviceTableViewController: UITableViewController {
     func contextualDeleteAction(forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
         let deleteAction = UIContextualAction(style: .destructive, title: nil,
         handler: { (action, view, completionHandler) in            
-            self.trainingDevicesInCategories[indexPath.section].trainingDevices.remove(at: indexPath.row)
+            self.trainingDevicesInCategories[indexPath.section].trainingDevices[self.getRealRow(planIndexPath: indexPath)].deviceInPlan = false
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
             self.saveTableData()
             completionHandler(true)
         })
-        deleteAction.image = UIImage(systemName: "trash")
-        deleteAction.backgroundColor = .systemRed
+        deleteAction.image = UIImage(systemName: "arrowshape.turn.up.left")
+        deleteAction.backgroundColor = UIColor.orange
         return deleteAction
     }
     

@@ -7,110 +7,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "EEBA6BD3-5C96-4167-8251-C2EE3967D07A"
-            shouldBeEnabled = "Yes"
+            uuid = "F42C0C2D-541D-4331-8316-3A8C15F13C2C"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FitForYou/TrainingDeviceFormViewController.swift"
+            filePath = "FitForYou/TrainingSettingsTableViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "49"
-            endingLineNumber = "49"
-            landmarkName = "saveClicked(_:)"
+            startingLineNumber = "119"
+            endingLineNumber = "119"
+            landmarkName = "tableView(_:willSelectRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "23AFE2C7-0A2F-4FA5-A0A3-9B88FA51777C"
+            uuid = "2029BB28-4E6E-45EE-9131-C6965B7AE605"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FitForYou/TrainingDeviceTableViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "169"
-            endingLineNumber = "169"
+            startingLineNumber = "200"
+            endingLineNumber = "200"
             landmarkName = "unwindFromDeviceFormViewController(segue:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "23AFE2C7-0A2F-4FA5-A0A3-9B88FA51777C - 63ed1f00788b687a"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "FitForYou.TrainingDeviceTableViewController.unwindFromDeviceFormViewController(segue: __C.UIStoryboardSegue) -&gt; ()"
-                  moduleName = "FitForYou"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/markusbastian/Documents/Swift%20source/FitForYou/FitForYou/TrainingDeviceTableViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "169"
-                  endingLineNumber = "169">
-               </Location>
-               <Location
-                  uuid = "23AFE2C7-0A2F-4FA5-A0A3-9B88FA51777C - 63ed1f00788b687a"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "FitForYou.TrainingDeviceTableViewController.unwindFromDeviceFormViewController(segue: __C.UIStoryboardSegue) -&gt; ()"
-                  moduleName = "FitForYou"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/markusbastian/Documents/Swift%20source/FitForYou/FitForYou/TrainingDeviceTableViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "169"
-                  endingLineNumber = "169">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "EF831212-F23B-447C-9436-1FB3B7ADDA81"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FitForYou/TrainingDeviceTableViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "177"
-            endingLineNumber = "177"
-            landmarkName = "unwindFromDeviceFormViewController(segue:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "43DD4BA1-9D56-4B6A-A650-F95AAFD28FB3"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FitForYou/TrainingDeviceTableViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "138"
-            endingLineNumber = "138"
-            landmarkName = "unwindFromSettingsViewController(segue:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "1E600F25-080D-467D-BCC3-BB9A08065131"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FitForYou/TrainingDeviceTableViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "146"
-            endingLineNumber = "146"
-            landmarkName = "unwindFromSettingsViewController(segue:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
