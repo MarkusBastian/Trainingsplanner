@@ -136,6 +136,27 @@ class TrainingSettingsTableViewController: UITableViewController {
         }
     }
 
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        var swipeConfig: UISwipeActionsConfiguration
+
+        let deleteAction = self.contextualDeleteAction(forRowAtIndexPath: indexPath)
+        swipeConfig = UISwipeActionsConfiguration(actions: [deleteAction])
+        return swipeConfig
+    }
+
+    func contextualDeleteAction(forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
+        let deleteAction = UIContextualAction(style: .destructive, title: nil,
+        handler: { (action, view, completionHandler) in
+            self.trainingDevicesInCategories?[indexPath.section].trainingDevices.remove(at: indexPath.row)
+            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            completionHandler(true)
+        })
+        deleteAction.image = UIImage(systemName: "trash")
+        deleteAction.backgroundColor = .systemRed
+        return deleteAction
+    }
+    
+
     /*
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {

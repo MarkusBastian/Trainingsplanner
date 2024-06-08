@@ -61,7 +61,6 @@ class TrainingDeviceTableViewController: UITableViewController {
     }
     
     fileprivate func getRealRow (planIndexPath: IndexPath) -> Int {
-        var realRowIndex: Int = 0
         var activeDevicesCounter = 0
         
         for i in 0...trainingDevicesInCategories[planIndexPath.section].trainingDevices.count - 1 {
@@ -69,16 +68,15 @@ class TrainingDeviceTableViewController: UITableViewController {
                 activeDevicesCounter += 1
             }
             if activeDevicesCounter - 1 == planIndexPath.row {
-                realRowIndex = i
+                return i
             }
         }
-        
-        return realRowIndex
+        return 0
     }
     
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-        var realRowFrom: Int = getRealRow(planIndexPath: fromIndexPath)
-        var realRowTo: Int = getRealRow(planIndexPath: to)
+        let realRowFrom: Int = getRealRow(planIndexPath: fromIndexPath)
+        let realRowTo: Int = getRealRow(planIndexPath: to)
         
         let movedTrainingDevice = trainingDevicesInCategories[fromIndexPath.section].trainingDevices.remove(at: realRowFrom)
         trainingDevicesInCategories[to.section].trainingDevices.insert(movedTrainingDevice, at: realRowTo)
@@ -197,7 +195,7 @@ class TrainingDeviceTableViewController: UITableViewController {
         }
         
         if let selectedIndexPath = tableView.indexPathForSelectedRow {
-            var realRowIndex = getRealRow(planIndexPath: selectedIndexPath)
+            let realRowIndex = getRealRow(planIndexPath: selectedIndexPath)
             if selectedIndexPath.section == trainingDevice.kategorie {
                 trainingDevicesInCategories[selectedIndexPath.section].trainingDevices[realRowIndex] = trainingDevice
             } else {
@@ -226,22 +224,6 @@ class TrainingDeviceTableViewController: UITableViewController {
         return cell
     }
         
-    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        var swipeConfig: UISwipeActionsConfiguration
-
-        if (!myEdit) {
-            if (inSwipe) {
-                return nil
-            }
-            let flagAction = self.contextualFlagAction(forRowAtIndexPath: indexPath)
-            swipeConfig = UISwipeActionsConfiguration(actions: [flagAction])
-        } else {
-            let deleteAction = self.contextualDeleteAction(forRowAtIndexPath: indexPath)
-            swipeConfig = UISwipeActionsConfiguration(actions: [deleteAction])
-        }
-        return swipeConfig
-    }
-    
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String {
         return deviceCategories[section].rawValue
     }
@@ -257,6 +239,22 @@ class TrainingDeviceTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 40.0
+    }
+    
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        var swipeConfig: UISwipeActionsConfiguration
+
+        if (!myEdit) {
+            if (inSwipe) {
+                return nil
+            }
+            let flagAction = self.contextualFlagAction(forRowAtIndexPath: indexPath)
+            swipeConfig = UISwipeActionsConfiguration(actions: [flagAction])
+        } else {
+            let deleteAction = self.contextualDeleteAction(forRowAtIndexPath: indexPath)
+            swipeConfig = UISwipeActionsConfiguration(actions: [deleteAction])
+        }
+        return swipeConfig
     }
     
     func contextualDeleteAction(forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
