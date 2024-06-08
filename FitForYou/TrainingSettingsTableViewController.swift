@@ -109,6 +109,7 @@ class TrainingSettingsTableViewController: UITableViewController {
             cell.selectionStyle = .default
             cell.textLabel?.textColor = .black
             cell.detailTextLabel?.textColor = .black
+            cell.accessoryView = nil
             cell.accessoryType = .none
         }
         return cell
