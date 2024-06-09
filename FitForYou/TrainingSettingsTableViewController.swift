@@ -28,7 +28,11 @@ class TrainingSettingsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         deviceCategories = [DeviceCategory.warmup, DeviceCategory.legs, DeviceCategory.back, DeviceCategory.abdominal, DeviceCategory.arms]
- 
+        
+        let backButton = UIBarButtonItem()
+        backButton.title = "Trainingsplan"
+        
+        self.navigationController?.navigationBar.topItem?.backBarButtonItem = backButton
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -48,7 +52,7 @@ class TrainingSettingsTableViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         tableView.reloadData()
     }
 
