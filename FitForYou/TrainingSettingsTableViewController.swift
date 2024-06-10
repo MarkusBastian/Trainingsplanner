@@ -61,14 +61,70 @@ class TrainingSettingsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let myHeader = UIView()
+        
         let label = UILabel()
         label.text = deviceCategories[section].rawValue
         label.font = UIFont.systemFont(ofSize: 20.0, weight: .bold)
         label.textColor = .black
         label.sizeToFit()
-        return label
+        myHeader.addSubview(label)
+        
+        if (section < trainingDevicesInCategories!.count - 1) {
+            let downButton = UIButton(frame: CGRect(x: 320, y: 5, width: 15, height: 15))
+            downButton.setImage(UIImage(systemName: "arrow.down"), for: .normal)
+            downButton.tag = section
+            downButton.addTarget(self, action: #selector(moveSectionDown), for: .touchUpInside)
+            myHeader.addSubview(downButton)
+        }
+
+        if (section > 0) {
+            let upButton = UIButton(frame: CGRect(x: 350, y: 5, width: 15, height: 15))
+            upButton.setImage(UIImage(systemName: "arrow.up"), for: .normal)
+            upButton.tag = section
+            upButton.addTarget(self, action: #selector(moveSectionUp), for: .touchUpInside)
+            myHeader.addSubview(upButton)
+        }
+            
+        return myHeader
     }
- 
+
+    @objc func moveSectionDown(_ button:UIButton){
+        let trainingsDeviceInCategory = (trainingDevicesInCategories?.remove(at: button.tag))!
+        trainingDevicesInCategories?.insert(trainingsDeviceInCategory, at: button.tag + 1)
+        tableView.moveSection(button.tag, toSection:button.tag + 1)
+        let deviveCategory = deviceCategories.remove(at: button.tag)
+        deviceCategories.insert(deviveCategory, at: button.tag + 1)
+        renumberKategories()
+        tableView.reloadData()
+    }
+
+    @objc func moveSectionUp(_ button:UIButton){
+        let trainingsDeviceInCategory = (trainingDevicesInCategories?.remove(at: button.tag))!
+        trainingDevicesInCategories?.insert(trainingsDeviceInCategory, at: button.tag - 1)
+        tableView.moveSection(button.tag, toSection:button.tag - 1)
+        let deviveCategory = deviceCategories.remove(at: button.tag)
+        deviceCategories.insert(deviveCategory, at: button.tag - 1)
+        renumberKategories()
+        tableView.reloadData()
+    }
+
+    fileprivate func renumberKategories() {
+        if trainingDevicesInCategories!.count > 0 {
+            for i in 0...trainingDevicesInCategories!.count - 1 {
+                if trainingDevicesInCategories![i].trainingDevices.count > 0 {
+                    trainingDevicesInCategories![i].category = i
+                    for j in 0...trainingDevicesInCategories![i].trainingDevices.count - 1 {
+                        trainingDevicesInCategories![i].trainingDevices[j].kategorie = i
+                        if trainingDevicesInCategories![i].trainingDevices[j].deviceInPlan == nil {
+                            trainingDevicesInCategories![i].trainingDevices[j].deviceInPlan = true
+                        }
+                    }
+                }
+            }
+        }
+     }
+    
     @IBSegueAction func addTrainingsDevice(_ coder: NSCoder) -> TrainingDeviceFormViewController? {
         return TrainingDeviceFormViewController(coder: coder)
     }
@@ -94,6 +150,7 @@ class TrainingSettingsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
         let cell = tableView.dequeueReusableCell(withIdentifier: PropertyKeys.trainingDeviceCell, for: indexPath)
              
         let trainingDevice = trainingDevicesInCategories![indexPath.section].trainingDevices[indexPath.row]
