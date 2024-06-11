@@ -13,16 +13,17 @@ class TrainingDeviceTableViewController: UITableViewController {
     var illegalMove: Bool = false
     var checkMarkInRows: [Int: Bool] = [:]
     var trainingDevicesInCategories: [TrainingDeviceInCategory] = []
+    var defaultDeviceCategories: [DeviceCategory] = [DeviceCategory.warmup, DeviceCategory.legs, DeviceCategory.back, DeviceCategory.abdominal, DeviceCategory.arms]
     var deviceCategories: [DeviceCategory] = [DeviceCategory] ()
 
     
     fileprivate func initTrainingsCategories() {
         trainingDevicesInCategories =
-        [TrainingDeviceInCategory(category: 0, trainingDevices: []),
-         TrainingDeviceInCategory(category: 1, trainingDevices: []),
-         TrainingDeviceInCategory(category: 2, trainingDevices: []),
-         TrainingDeviceInCategory(category: 3, trainingDevices: []),
-         TrainingDeviceInCategory(category: 4, trainingDevices: [])]
+        [TrainingDeviceInCategory(category: 0, categoryTitle: defaultDeviceCategories[0].rawValue, trainingDevices: []),
+         TrainingDeviceInCategory(category: 1, categoryTitle: defaultDeviceCategories[1].rawValue, trainingDevices: []),
+         TrainingDeviceInCategory(category: 2, categoryTitle: defaultDeviceCategories[2].rawValue, trainingDevices: []),
+         TrainingDeviceInCategory(category: 3, categoryTitle: defaultDeviceCategories[3].rawValue, trainingDevices: []),
+         TrainingDeviceInCategory(category: 4, categoryTitle: defaultDeviceCategories[4].rawValue, trainingDevices: [])]
     }
     
     override func viewDidLoad() {
@@ -30,7 +31,6 @@ class TrainingDeviceTableViewController: UITableViewController {
 
         navigationItem.leftBarButtonItem = editButtonItem
         navigationItem.leftBarButtonItem?.title = "Bearbeiten"
-        deviceCategories = [DeviceCategory.warmup, DeviceCategory.legs, DeviceCategory.back, DeviceCategory.abdominal, DeviceCategory.arms]
         initTrainingsCategories()
     }
 
@@ -105,8 +105,19 @@ class TrainingDeviceTableViewController: UITableViewController {
             propertyListDecoder.decode(Array<TrainingDeviceInCategory>.self, from: retrievedtrainingDeviceData) {
             trainingDevicesInCategories = decodedtrainingDevices
         }
+        deviceCategories.removeAll()
         if trainingDevicesInCategories.count > 0 {
             for i in 0...trainingDevicesInCategories.count - 1 {
+                if trainingDevicesInCategories[i].categoryTitle == nil {
+                    trainingDevicesInCategories[i].categoryTitle = defaultDeviceCategories[i].rawValue
+                    deviceCategories.append(defaultDeviceCategories[i])
+                } else {
+                    for title in defaultDeviceCategories {
+                        if (title.rawValue == trainingDevicesInCategories[i].categoryTitle) {
+                            deviceCategories.append(title)
+                        }
+                    }
+                }
                 if trainingDevicesInCategories[i].trainingDevices.count > 0 {
                     for j in 0...trainingDevicesInCategories[i].trainingDevices.count - 1 {
                         if trainingDevicesInCategories[i].trainingDevices[j].deviceInPlan == nil {
@@ -115,6 +126,8 @@ class TrainingDeviceTableViewController: UITableViewController {
                     }
                 }
             }
+        } else {
+            deviceCategories = defaultDeviceCategories
         }
    }
     
@@ -159,16 +172,18 @@ class TrainingDeviceTableViewController: UITableViewController {
             let trainingsSettingsTableViewController = segue.source as?
                 TrainingSettingsTableViewController,
 
-                let trainingDevicesInCategories = trainingsSettingsTableViewController.trainingDevicesInCategories
+                let trainingDevicesInCategories = trainingsSettingsTableViewController.trainingDevicesInCategories,
+                let deviceCategories = trainingsSettingsTableViewController.deviceCategories
         else {
             return
         }
         self.trainingDevicesInCategories = trainingDevicesInCategories
+        self.deviceCategories = deviceCategories
         saveTableData()
     }
     
     @IBSegueAction func settingsForTrainingsDevices(_ coder: NSCoder) -> TrainingSettingsTableViewController? {
-        return  TrainingSettingsTableViewController(coder: coder, trainingDevices: trainingDevicesInCategories)
+        return  TrainingSettingsTableViewController(coder: coder, trainingDevices: trainingDevicesInCategories, categories: deviceCategories)
      }
     
     @IBSegueAction func editTrainingsDevice(_ coder: NSCoder, sender: Any?) -> TrainingDeviceFormViewController? {
@@ -182,7 +197,7 @@ class TrainingDeviceTableViewController: UITableViewController {
         
         buildCheckmarkDictionary()
         
-        return TrainingDeviceFormViewController(coder: coder, trainingDevice: trainingDeviceToEdit)
+        return TrainingDeviceFormViewController(coder: coder, trainingDevice: trainingDeviceToEdit, categories: deviceCategories)
     }
 
     @IBAction func unwindFromDeviceFormViewController(segue: UIStoryboardSegue) {

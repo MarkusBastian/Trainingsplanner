@@ -28,18 +28,23 @@ class TrainingDeviceFormViewController: UIViewController, UIPickerViewDelegate, 
         categoryPicker.dataSource = self
         kategorie.inputView = categoryPicker
 
-        pickerData = [DeviceCategory.warmup, DeviceCategory.legs, DeviceCategory.back, DeviceCategory.abdominal, DeviceCategory.arms]
-
         updateView()
     }
     
 
-    init?(coder: NSCoder, trainingDevice: TrainingDevice?) {
+    init?(coder: NSCoder, trainingDevice: TrainingDevice?, categories: [DeviceCategory]) {
         self.trainingDevice = trainingDevice
         self.calledFromSettingsController = false
+        self.pickerData = categories
         super.init(coder: coder)
     }
-    
+
+    init?(coder: NSCoder, categories: [DeviceCategory]) {
+        self.calledFromSettingsController = true
+        self.pickerData = categories
+        super.init(coder: coder)
+    }
+
     required init?(coder: NSCoder) {
         self.calledFromSettingsController = true
         super.init(coder: coder)

@@ -9,6 +9,7 @@ import Foundation
 
 struct TrainingDeviceInCategory: Codable {
     var category: Int
+    var categoryTitle: Optional<String>
     var trainingDevices: [TrainingDevice]
 
     var description: String {

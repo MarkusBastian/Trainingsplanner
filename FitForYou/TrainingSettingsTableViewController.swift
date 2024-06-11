@@ -10,14 +10,15 @@ import UIKit
 class TrainingSettingsTableViewController: UITableViewController {
 
     var trainingDevicesInCategories: [TrainingDeviceInCategory]?
-    var deviceCategories: [DeviceCategory] = [DeviceCategory] ()
+    var deviceCategories: [DeviceCategory]?
 
     struct PropertyKeys {
         static let trainingDeviceCell = "TrainingDeviceCell"
     }
  
-    init?(coder: NSCoder, trainingDevices: [TrainingDeviceInCategory]?) {
+    init?(coder: NSCoder, trainingDevices: [TrainingDeviceInCategory]?, categories: [DeviceCategory]?) {
         self.trainingDevicesInCategories = trainingDevices!
+        self.deviceCategories = categories!
         super.init(coder: coder)
     }
     
@@ -27,7 +28,6 @@ class TrainingSettingsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        deviceCategories = [DeviceCategory.warmup, DeviceCategory.legs, DeviceCategory.back, DeviceCategory.abdominal, DeviceCategory.arms]
         
         let backButton = UIBarButtonItem()
         backButton.title = "Trainingsplan"
@@ -57,14 +57,14 @@ class TrainingSettingsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String {
-        return deviceCategories[section].rawValue
+        return deviceCategories![section].rawValue
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let myHeader = UIView()
         
         let label = UILabel()
-        label.text = deviceCategories[section].rawValue
+        label.text = deviceCategories![section].rawValue
         label.font = UIFont.systemFont(ofSize: 20.0, weight: .bold)
         label.textColor = .black
         label.sizeToFit()
@@ -93,8 +93,8 @@ class TrainingSettingsTableViewController: UITableViewController {
         let trainingsDeviceInCategory = (trainingDevicesInCategories?.remove(at: button.tag))!
         trainingDevicesInCategories?.insert(trainingsDeviceInCategory, at: button.tag + 1)
         tableView.moveSection(button.tag, toSection:button.tag + 1)
-        let deviveCategory = deviceCategories.remove(at: button.tag)
-        deviceCategories.insert(deviveCategory, at: button.tag + 1)
+        let deviceCategory = deviceCategories?.remove(at: button.tag)
+        deviceCategories?.insert(deviceCategory!, at: button.tag + 1)
         renumberKategories()
         tableView.reloadData()
     }
@@ -103,8 +103,8 @@ class TrainingSettingsTableViewController: UITableViewController {
         let trainingsDeviceInCategory = (trainingDevicesInCategories?.remove(at: button.tag))!
         trainingDevicesInCategories?.insert(trainingsDeviceInCategory, at: button.tag - 1)
         tableView.moveSection(button.tag, toSection:button.tag - 1)
-        let deviveCategory = deviceCategories.remove(at: button.tag)
-        deviceCategories.insert(deviveCategory, at: button.tag - 1)
+        let deviveCategory = deviceCategories?.remove(at: button.tag)
+        deviceCategories?.insert(deviveCategory!, at: button.tag - 1)
         renumberKategories()
         tableView.reloadData()
     }
@@ -126,7 +126,7 @@ class TrainingSettingsTableViewController: UITableViewController {
      }
     
     @IBSegueAction func addTrainingsDevice(_ coder: NSCoder) -> TrainingDeviceFormViewController? {
-        return TrainingDeviceFormViewController(coder: coder)
+        return TrainingDeviceFormViewController(coder: coder, categories: deviceCategories!)
     }
     
     @IBAction func saveDevices(_ sender: Any) {

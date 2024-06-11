@@ -174,7 +174,7 @@
                         <color key="backgroundColor" systemColor="systemGray4Color"/>
                     </view>
                     <navigationItem key="navigationItem" title="Gerätedetails" largeTitleDisplayMode="never" id="vBG-05-QLL">
-                        <barButtonItem key="rightBarButtonItem" title="Speichern" id="NcB-pN-a75">
+                        <barButtonItem key="rightBarButtonItem" image="square.and.arrow.down" catalog="system" id="NcB-pN-a75">
                             <connections>
                                 <action selector="saveClicked:" destination="Jdx-qb-Jda" id="XS6-Cj-ZKo"/>
                             </connections>
@@ -243,7 +243,7 @@
                                     <segue destination="Jdx-qb-Jda" kind="show" destinationCreationSelector="addTrainingsDevice:" id="GiR-es-URU"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem title="Sichern" id="S69-ZD-ZRc">
+                            <barButtonItem image="square.and.arrow.down" catalog="system" id="S69-ZD-ZRc">
                                 <connections>
                                     <action selector="saveDevices:" destination="JsN-kf-DWV" id="yXm-s1-hUO"/>
                                 </connections>
@@ -266,17 +266,18 @@
     <resources>
         <image name="gearshape.fill" catalog="system" width="128" height="123"/>
         <image name="info" catalog="system" width="93" height="128"/>
+        <image name="square.and.arrow.down" catalog="system" width="112" height="128"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray4Color">
-            <color red="0.81960784313725488" green="0.81960784313725488" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.81960784310000001" green="0.81960784310000001" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray5Color">
-            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemTealColor">
-            <color red="0.18823529411764706" green="0.69019607843137254" blue="0.7803921568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.18823529410000001" green="0.69019607839999997" blue="0.78039215689999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

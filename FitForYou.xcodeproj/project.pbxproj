@@ -78,11 +78,11 @@
 				E8DF3A402C0CAA280056D55A /* TrainingSettingsTableViewController.swift */,
 				E8DD4E402BB6E9F20090389A /* TrainingDevice.swift */,
 				E8DFB9C32BCFCCED001202EF /* DeviceCategory.swift */,
+				E8D8EF6D2BD7BCE700900AC7 /* TrainingsDeviceInCategory.swift */,
 				1830B16B23A3064200FF29B5 /* Main.storyboard */,
 				1830B16E23A3064300FF29B5 /* Assets.xcassets */,
 				1830B17023A3064300FF29B5 /* LaunchScreen.storyboard */,
 				1830B17323A3064300FF29B5 /* Info.plist */,
-				E8D8EF6D2BD7BCE700900AC7 /* TrainingsDeviceInCategory.swift */,
 			);
 			path = FitForYou;
 			sourceTree = "<group>";
