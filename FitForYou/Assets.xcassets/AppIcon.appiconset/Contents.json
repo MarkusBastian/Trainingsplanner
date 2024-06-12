@@ -7,6 +7,7 @@
       "size" : "20x20"
     },
     {
+      "filename" : "60.png",
       "idiom" : "universal",
       "platform" : "ios",
       "scale" : "3x",
@@ -19,6 +20,7 @@
       "size" : "29x29"
     },
     {
+      "filename" : "87.png",
       "idiom" : "universal",
       "platform" : "ios",
       "scale" : "3x",
@@ -49,19 +51,20 @@
       "size" : "40x40"
     },
     {
+      "filename" : "120.png",
       "idiom" : "universal",
       "platform" : "ios",
       "scale" : "2x",
       "size" : "60x60"
     },
     {
+      "filename" : "180.png",
       "idiom" : "universal",
       "platform" : "ios",
       "scale" : "3x",
       "size" : "60x60"
     },
     {
-      "filename" : "IMG_4950.PNG",
       "idiom" : "universal",
       "platform" : "ios",
       "scale" : "2x",
@@ -92,7 +95,7 @@
       "size" : "83.5x83.5"
     },
     {
-      "filename" : "IMG_4950 1.PNG",
+      "filename" : "1024.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
