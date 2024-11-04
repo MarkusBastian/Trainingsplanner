@@ -172,11 +172,13 @@ class TrainingDeviceTableViewController: UITableViewController {
     }
     
     @IBSegueAction func settingsForTrainingsDevices(_ coder: NSCoder) -> TrainingSettingsTableViewController? {
+        saveTableData()
         return  TrainingSettingsTableViewController(coder: coder, trainingDevices: trainingDevicesInCategories, categories: deviceCategories)
      }
     
     @IBSegueAction func editTrainingsDevice(_ coder: NSCoder, sender: Any?) -> TrainingDeviceFormViewController? {
         let trainingDeviceToEdit: TrainingDevice?
+        saveTableData()
         if let cell = sender as? UITableViewCell,
            let indexPath = tableView.indexPath(for: cell) {
             trainingDeviceToEdit = trainingDevicesInCategories[indexPath.section].trainingDevices[getRealRow(planIndexPath: indexPath)]
@@ -222,7 +224,7 @@ class TrainingDeviceTableViewController: UITableViewController {
         content.secondaryText = trainingDevice.description
         cell.showsReorderControl = true
         cell.contentConfiguration = content
-        cell.accessoryType = trainingsDevice.workedOut == true ? .checkmark : .none
+        cell.accessoryType = trainingDevice.workedOut == true ? .checkmark : .none
         return cell
     }
         
@@ -281,6 +283,12 @@ class TrainingDeviceTableViewController: UITableViewController {
             } else {
                 self.tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
                 self.trainingDevicesInCategories[indexPath.section].trainingDevices[self.getRealRow(planIndexPath: indexPath)].workedOut = true
+                if indexPath.section == self.trainingDevicesInCategories.count - 1 &&
+                    indexPath.row == self.trainingDevicesInCategories[indexPath.section].trainingDevices.count - 1 {
+                    let alert = UIAlertController(title: "Training komplett " + "👍", message: "Alle Übungen wurden gemeistert.", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                }
             }
             completionHandler(true)
         })

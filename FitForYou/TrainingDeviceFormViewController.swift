@@ -60,10 +60,10 @@ class TrainingDeviceFormViewController: UIViewController, UIPickerViewDelegate, 
               let trainingsDeviceKategorie = kategorie else {return}
         
         if calledFromSettingsController {
-            trainingDevice = TrainingDevice(bezeichnung: trainingDeviceBezeichnung, nummer: trainingDeviceNummer, einstellung: trainingDeviceEinstellung, gewicht: trainingDeviceGewicht, kommentar: trainingDeviceKommentar, kategorie: trainingsDeviceKategorie, deviceInPlan: false)
+            trainingDevice = TrainingDevice(bezeichnung: trainingDeviceBezeichnung, nummer: trainingDeviceNummer, einstellung: trainingDeviceEinstellung, gewicht: trainingDeviceGewicht, kommentar: trainingDeviceKommentar, kategorie: trainingsDeviceKategorie, deviceInPlan: false, workedOut: self.trainingDevice?.workedOut)
             performSegue(withIdentifier: "UnwindToSettingsController", sender: self)
         } else {
-            trainingDevice = TrainingDevice(bezeichnung: trainingDeviceBezeichnung, nummer: trainingDeviceNummer, einstellung: trainingDeviceEinstellung, gewicht: trainingDeviceGewicht, kommentar: trainingDeviceKommentar, kategorie: trainingsDeviceKategorie, deviceInPlan: true)
+            trainingDevice = TrainingDevice(bezeichnung: trainingDeviceBezeichnung, nummer: trainingDeviceNummer, einstellung: trainingDeviceEinstellung, gewicht: trainingDeviceGewicht, kommentar: trainingDeviceKommentar, kategorie: trainingsDeviceKategorie, deviceInPlan: true, workedOut: self.trainingDevice?.workedOut)
             performSegue(withIdentifier: "UnwindTrainingDevice", sender: self)
         }
     }
