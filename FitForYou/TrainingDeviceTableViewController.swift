@@ -15,6 +15,7 @@ class TrainingDeviceTableViewController: UITableViewController {
     var defaultDeviceCategories: [DeviceCategory] = [DeviceCategory.warmup, DeviceCategory.legs, DeviceCategory.back, DeviceCategory.abdominal, DeviceCategory.arms]
     var deviceCategories: [DeviceCategory] = [DeviceCategory] ()
     var lastIndexPath: IndexPath?
+    var firstLoad: Bool = true
 
     
     fileprivate func initTrainingsCategories() {
@@ -123,7 +124,7 @@ class TrainingDeviceTableViewController: UITableViewController {
                         if trainingDevicesInCategories[i].trainingDevices[j].deviceInPlan == nil {
                             trainingDevicesInCategories[i].trainingDevices[j].deviceInPlan = true
                         }
-                        if trainingDevicesInCategories[i].trainingDevices[j].workedOut == nil {
+                        if trainingDevicesInCategories[i].trainingDevices[j].workedOut == nil || firstLoad == true {
                             trainingDevicesInCategories[i].trainingDevices[j].workedOut = false
                         }
                         if trainingDevicesInCategories[i].trainingDevices[j].deviceInPlan == true {
@@ -135,6 +136,7 @@ class TrainingDeviceTableViewController: UITableViewController {
         } else {
             deviceCategories = defaultDeviceCategories
         }
+        firstLoad = false
    }
     
     override func viewWillAppear(_ animated: Bool) {
