@@ -14,6 +14,7 @@ class TrainingDeviceTableViewController: UITableViewController {
     var trainingDevicesInCategories: [TrainingDeviceInCategory] = []
     var defaultDeviceCategories: [DeviceCategory] = [DeviceCategory.warmup, DeviceCategory.legs, DeviceCategory.back, DeviceCategory.abdominal, DeviceCategory.arms]
     var deviceCategories: [DeviceCategory] = [DeviceCategory] ()
+    var lastIndexPath: IndexPath?
 
     
     fileprivate func initTrainingsCategories() {
@@ -124,6 +125,9 @@ class TrainingDeviceTableViewController: UITableViewController {
                         }
                         if trainingDevicesInCategories[i].trainingDevices[j].workedOut == nil {
                             trainingDevicesInCategories[i].trainingDevices[j].workedOut = false
+                        }
+                        if trainingDevicesInCategories[i].trainingDevices[j].deviceInPlan == true {
+                            lastIndexPath = IndexPath(row: j, section: i)
                         }
                     }
                 }
@@ -283,8 +287,7 @@ class TrainingDeviceTableViewController: UITableViewController {
             } else {
                 self.tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
                 self.trainingDevicesInCategories[indexPath.section].trainingDevices[self.getRealRow(planIndexPath: indexPath)].workedOut = true
-                if indexPath.section == self.trainingDevicesInCategories.count - 1 &&
-                    indexPath.row == self.trainingDevicesInCategories[indexPath.section].trainingDevices.count - 1 {
+                if indexPath == self.lastIndexPath {
                     let alert = UIAlertController(title: "Training komplett " + "👍", message: "Alle Übungen wurden gemeistert.", preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                     self.present(alert, animated: true, completion: nil)
