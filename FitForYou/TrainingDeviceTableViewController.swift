@@ -11,7 +11,6 @@ class TrainingDeviceTableViewController: UITableViewController {
     var inSwipe: Bool = false
     var myEdit: Bool = false
     var illegalMove: Bool = false
-    var checkMarkInRows: [Int: Bool] = [:]
     var trainingDevicesInCategories: [TrainingDeviceInCategory] = []
     var defaultDeviceCategories: [DeviceCategory] = [DeviceCategory.warmup, DeviceCategory.legs, DeviceCategory.back, DeviceCategory.abdominal, DeviceCategory.arms]
     var deviceCategories: [DeviceCategory] = [DeviceCategory] ()
@@ -123,6 +122,9 @@ class TrainingDeviceTableViewController: UITableViewController {
                         if trainingDevicesInCategories[i].trainingDevices[j].deviceInPlan == nil {
                             trainingDevicesInCategories[i].trainingDevices[j].deviceInPlan = true
                         }
+                        if trainingDevicesInCategories[i].trainingDevices[j].workedOut == nil {
+                            trainingDevicesInCategories[i].trainingDevices[j].workedOut = false
+                        }
                     }
                 }
             }
@@ -154,19 +156,6 @@ class TrainingDeviceTableViewController: UITableViewController {
         return trainingDevicesInCategories.count
     }
 
-    fileprivate func buildCheckmarkDictionary() {
-        checkMarkInRows = [:]
-        for cell in tableView.visibleCells {
-            let indexPath = tableView.indexPath(for: cell)
-            let key: Int = indexPath!.section * 100 +  indexPath!.row
-            if (cell.accessoryType == .checkmark) {
-                checkMarkInRows[key] = true
-            } else {
-                checkMarkInRows[key] = false
-            }
-        }
-    }
-   
     @IBAction func unwindFromSettingsViewController(segue: UIStoryboardSegue) {
         guard
             let trainingsSettingsTableViewController = segue.source as?
@@ -194,8 +183,6 @@ class TrainingDeviceTableViewController: UITableViewController {
         } else {
             trainingDeviceToEdit = nil
         }
-        
-        buildCheckmarkDictionary()
         
         return TrainingDeviceFormViewController(coder: coder, trainingDevice: trainingDeviceToEdit, categories: deviceCategories)
     }
@@ -235,7 +222,7 @@ class TrainingDeviceTableViewController: UITableViewController {
         content.secondaryText = trainingDevice.description
         cell.showsReorderControl = true
         cell.contentConfiguration = content
-        cell.accessoryType = checkMarkInRows[indexPath.section * 100 + indexPath.row] == true ? .checkmark : .none
+        cell.accessoryType = trainingsDevice.workedOut == true ? .checkmark : .none
         return cell
     }
         
@@ -276,6 +263,7 @@ class TrainingDeviceTableViewController: UITableViewController {
         let deleteAction = UIContextualAction(style: .destructive, title: nil,
         handler: { (action, view, completionHandler) in            
             self.trainingDevicesInCategories[indexPath.section].trainingDevices[self.getRealRow(planIndexPath: indexPath)].deviceInPlan = false
+            self.trainingDevicesInCategories[indexPath.section].trainingDevices[self.getRealRow(planIndexPath: indexPath)].workedOut = false
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
             self.saveTableData()
             completionHandler(true)
@@ -288,9 +276,11 @@ class TrainingDeviceTableViewController: UITableViewController {
     func contextualFlagAction(forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
         let flagAction = UIContextualAction(style: .normal, title: "Flag", handler: { (action, view, completionHandler) in
             if (self.tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark) {
-                self.tableView.cellForRow(at: indexPath)?.accessoryType = .none
+                self.trainingDevicesInCategories[indexPath.section].trainingDevices[self.getRealRow(planIndexPath: indexPath)].workedOut = false
+            	self.tableView.cellForRow(at: indexPath)?.accessoryType = .none
             } else {
                 self.tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+                self.trainingDevicesInCategories[indexPath.section].trainingDevices[self.getRealRow(planIndexPath: indexPath)].workedOut = true
             }
             completionHandler(true)
         })
