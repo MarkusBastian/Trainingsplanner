@@ -70,19 +70,19 @@
 		1830B16423A3064200FF29B5 /* FitForYou */ = {
 			isa = PBXGroup;
 			children = (
-				E8CF592E2BFDFC9500D28890 /* InfoPopUp */,
 				1830B16523A3064200FF29B5 /* AppDelegate.swift */,
-				1830B16723A3064200FF29B5 /* SceneDelegate.swift */,
-				1830B17923A3067E00FF29B5 /* TrainingDeviceTableViewController.swift */,
-				E8DD4E422BB6ECDA0090389A /* TrainingDeviceFormViewController.swift */,
-				E8DF3A402C0CAA280056D55A /* TrainingSettingsTableViewController.swift */,
-				E8DD4E402BB6E9F20090389A /* TrainingDevice.swift */,
-				E8DFB9C32BCFCCED001202EF /* DeviceCategory.swift */,
-				E8D8EF6D2BD7BCE700900AC7 /* TrainingsDeviceInCategory.swift */,
-				1830B16B23A3064200FF29B5 /* Main.storyboard */,
 				1830B16E23A3064300FF29B5 /* Assets.xcassets */,
-				1830B17023A3064300FF29B5 /* LaunchScreen.storyboard */,
+				E8DFB9C32BCFCCED001202EF /* DeviceCategory.swift */,
 				1830B17323A3064300FF29B5 /* Info.plist */,
+				E8CF592E2BFDFC9500D28890 /* InfoPopUp */,
+				1830B17023A3064300FF29B5 /* LaunchScreen.storyboard */,
+				1830B16B23A3064200FF29B5 /* Main.storyboard */,
+				1830B16723A3064200FF29B5 /* SceneDelegate.swift */,
+				E8DD4E402BB6E9F20090389A /* TrainingDevice.swift */,
+				E8DD4E422BB6ECDA0090389A /* TrainingDeviceFormViewController.swift */,
+				1830B17923A3067E00FF29B5 /* TrainingDeviceTableViewController.swift */,
+				E8D8EF6D2BD7BCE700900AC7 /* TrainingsDeviceInCategory.swift */,
+				E8DF3A402C0CAA280056D55A /* TrainingSettingsTableViewController.swift */,
 			);
 			path = FitForYou;
 			sourceTree = "<group>";

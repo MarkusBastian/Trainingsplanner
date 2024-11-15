@@ -270,8 +270,8 @@ class TrainingDeviceTableViewController: UITableViewController {
     func contextualDeleteAction(forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
         let deleteAction = UIContextualAction(style: .destructive, title: nil,
         handler: { (action, view, completionHandler) in            
-            self.trainingDevicesInCategories[indexPath.section].trainingDevices[self.getRealRow(planIndexPath: indexPath)].deviceInPlan = false
             self.trainingDevicesInCategories[indexPath.section].trainingDevices[self.getRealRow(planIndexPath: indexPath)].workedOut = false
+            self.trainingDevicesInCategories[indexPath.section].trainingDevices[self.getRealRow(planIndexPath: indexPath)].deviceInPlan = false
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
             self.saveTableData()
             completionHandler(true)
@@ -283,13 +283,14 @@ class TrainingDeviceTableViewController: UITableViewController {
     
     func contextualFlagAction(forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
         let flagAction = UIContextualAction(style: .normal, title: "Flag", handler: { (action, view, completionHandler) in
+            let realIndexPath = IndexPath(row: self.getRealRow(planIndexPath: indexPath), section: indexPath.section)
             if (self.tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark) {
-                self.trainingDevicesInCategories[indexPath.section].trainingDevices[self.getRealRow(planIndexPath: indexPath)].workedOut = false
+                self.trainingDevicesInCategories[realIndexPath.section].trainingDevices[realIndexPath.row].workedOut = false
             	self.tableView.cellForRow(at: indexPath)?.accessoryType = .none
             } else {
                 self.tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-                self.trainingDevicesInCategories[indexPath.section].trainingDevices[self.getRealRow(planIndexPath: indexPath)].workedOut = true
-                if indexPath == self.lastIndexPath {
+                self.trainingDevicesInCategories[indexPath.section].trainingDevices[realIndexPath.row].workedOut = true
+                if realIndexPath == self.lastIndexPath {
                     let alert = UIAlertController(title: "Training komplett " + "👍", message: "Alle Übungen wurden gemeistert.", preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                     self.present(alert, animated: true, completion: nil)
